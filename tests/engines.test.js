@@ -5,10 +5,11 @@ import { extractTokenAddress, detectPlatform } from '../src/content/platform-det
 import { evaluateRugRisk } from '../src/engines/rugpull.js';
 import { analyzeBundlerAndInsiders } from '../src/engines/bundler.js';
 import { calculateMomentumAndFlow } from '../src/engines/momentum.js';
+import { analyzeProfitabilityAndTrend } from '../src/engines/profitability.js';
 import { calculateWinProbability } from '../src/engines/winscore.js';
 
 test('Platform Detector resolves token address from URL', () => {
-  const url = 'https://axiom.trade/token/7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8u7ppump';
+  const url = 'https://axiom.trade/token/7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8u7ppump?chain=sol';
   const result = extractTokenAddress(url);
   assert.equal(result.address, '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8u7ppump');
   assert.equal(result.source, 'URL');
@@ -53,27 +54,31 @@ test('Bundler Engine sums bundle % and identifies sniper dump alerts', () => {
   assert.equal(result.alerts.sniperDumping, true);
 });
 
-test('Momentum Engine calculates CVD and identifies divergences', () => {
-  const momentum = calculateMomentumAndFlow({
-    takerBuyVolumeUSD: 100000,
-    takerSellVolumeUSD: 20000,
-    washVolumeUSD: 10000,
-    priceTrend: 'RISING',
-    cvd5m: -5000
+test('Profitability Engine calculates volume acceleration and run probabilities', () => {
+  const prof = analyzeProfitabilityAndTrend({
+    volume1m: 10000,
+    volume5m: 20000,
+    priceChange1mPct: 4.0,
+    priceChange5mPct: 12.0,
+    cvd5m: 15000,
+    organicRatio: 0.9
   });
 
-  assert.equal(momentum.organicVolumeRatio, 0.92);
-  assert.equal(momentum.divergence, 'BEARISH_DIVERGENCE');
+  assert.equal(prof.momentumImpulse, 'EXPLOSIVE');
+  assert.equal(prof.tradeZone, 'PRIME_ENTRY');
+  assert.ok(parseInt(prof.runProbabilities.prob2x) > 50);
 });
 
-test('Win Score Engine produces correct Verdict Badges', () => {
+test('Win Score Engine produces correct Verdict Badges and Action Guidance', () => {
   const strongBuyWin = calculateWinProbability({
     rugData: { overallRugRiskScore: 5 },
     bundlerData: { bundledSupplyPercent: 5, totalInsiderControlPercent: 10 },
-    momentumData: { organicVolumeRatio: 0.9, cvd5m: 20000 }
+    momentumData: { organicVolumeRatio: 0.9, cvd5m: 20000 },
+    profitabilityData: { momentumImpulse: 'EXPLOSIVE', tradeZone: 'PRIME_ENTRY' }
   });
 
-  assert.equal(strongBuyWin.actionableVerdict.badgeText, 'STRONG BUY');
+  assert.equal(strongBuyWin.actionableVerdict.badgeText, 'AGGRESSIVE BUY');
+  assert.equal(strongBuyWin.actionableVerdict.actionRecommendation, 'HIGH CONVICTION ENTRY');
 
   const criticalRiskWin = calculateWinProbability({
     rugData: { overallRugRiskScore: 85, flags: ['HONEYPOT_DETECTED'] },
@@ -81,5 +86,5 @@ test('Win Score Engine produces correct Verdict Badges', () => {
     momentumData: { organicVolumeRatio: 0.2 }
   });
 
-  assert.equal(criticalRiskWin.actionableVerdict.badgeText, 'DO NOT TRADE / CRITICAL RISK');
+  assert.equal(criticalRiskWin.actionableVerdict.badgeText, 'DO NOT TRADE');
 });

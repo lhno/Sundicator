@@ -1,96 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
+
 :host {
   all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .hud-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 380px;
-  background-color: #0b0e14;
-  border: 1px solid #1f2937;
-  border-radius: 8px;
-  color: #e0e6ed;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  top: 16px;
+  right: 16px;
+  width: 360px;
+  background: rgba(11, 14, 20, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #f1f5f9;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.1);
   z-index: 999999;
-  font-size: 12px;
-  backdrop-filter: blur(8px);
+  font-size: 11px;
+  backdrop-filter: blur(16px);
   user-select: none;
+  overflow: hidden;
 }
 
 .hud-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #131722;
-  border-bottom: 1px solid #1f2937;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   cursor: move;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+}
+
+.hud-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-dot {
+  width: 7px;
+  height: 7px;
+  background: #00ff87;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00ff87;
 }
 
 .hud-title {
-  font-weight: bold;
-  color: #00f2fe;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
 .hud-controls span {
-  margin-left: 8px;
+  margin-left: 10px;
   cursor: pointer;
-  color: #9ca3af;
+  color: #64748b;
+  font-weight: 600;
+  transition: color 0.15s ease;
 }
 
 .hud-controls span:hover {
-  color: #ffffff;
+  color: #f8fafc;
 }
 
-.hud-body {
-  padding: 12px;
-  max-height: 520px;
-  overflow-y: auto;
+/* Primary Verdict Banner */
+.verdict-banner {
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.hud-section {
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #1f2937;
+.verdict-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.hud-section-title {
-  font-weight: 600;
-  color: #9ca3af;
-  margin-bottom: 6px;
+.verdict-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge-green  { background: rgba(0, 255, 135, 0.12); color: #00ff87; border: 1px solid rgba(0, 255, 135, 0.3); }
+.badge-cyan   { background: rgba(0, 242, 254, 0.12); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3); }
+.badge-yellow { background: rgba(255, 184, 0, 0.12); color: #ffb800; border: 1px solid rgba(255, 184, 0, 0.3); }
+.badge-orange { background: rgba(255, 115, 0, 0.12); color: #ff7300; border: 1px solid rgba(255, 115, 0, 0.3); }
+.badge-red    { background: rgba(255, 0, 85, 0.12); color: #ff0055; border: 1px solid rgba(255, 0, 85, 0.3); }
+.badge-gray   { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+.win-score-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 800;
+  color: #00ff87;
+  background: rgba(0, 255, 135, 0.08);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 255, 135, 0.2);
+}
+
+.action-guidance {
   font-size: 10px;
+  color: #94a3b8;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Tab Navigation */
+.hud-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.tab-btn.active {
+  color: #00f2fe;
+  border-bottom-color: #00f2fe;
+  background: rgba(0, 242, 254, 0.04);
+}
+
+/* Panel Body */
+.hud-body {
+  padding: 12px 14px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.metric-card-full {
+  grid-column: span 2;
+}
+
+.card-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: bold;
-  text-align: center;
+.card-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #f1f5f9;
 }
 
-.badge-green { background-color: rgba(0, 255, 135, 0.15); color: #00ff87; border: 1px solid #00ff87; }
-.badge-yellow { background-color: rgba(255, 184, 0, 0.15); color: #ffb800; border: 1px solid #ffb800; }
-.badge-red { background-color: rgba(255, 0, 85, 0.15); color: #ff0055; border: 1px solid #ff0055; }
-.badge-gray { background-color: rgba(156, 163, 175, 0.15); color: #9ca3af; border: 1px solid #9ca3af; }
+.val-green { color: #00ff87; }
+.val-red { color: #ff0055; }
+.val-yellow { color: #ffb800; }
+.val-cyan { color: #00f2fe; }
 
-.metric-row {
-  display: flex;
-  justify-content: space-between;
-  margin: 4px 0;
+/* Progress Mini Bars */
+.bar-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
 }
 
-.metric-label {
-  color: #9ca3af;
+.bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
 
-.metric-value {
-  font-family: "JetBrains Mono", monospace;
-  font-weight: bold;
-}
+.fill-green { background: #00ff87; }
+.fill-cyan { background: #00f2fe; }
+.fill-red { background: #ff0055; }

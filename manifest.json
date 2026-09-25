@@ -40,6 +40,7 @@
         "src/engines/rugpull.js",
         "src/engines/bundler.js",
         "src/engines/momentum.js",
+        "src/engines/profitability.js",
         "src/engines/winscore.js"
       ],
       "matches": ["<all_urls>"]
