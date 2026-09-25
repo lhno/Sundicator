@@ -33,7 +33,15 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["src/ui/styles.css"],
+      "resources": [
+        "src/ui/styles.css",
+        "src/ui/hud-overlay.js",
+        "src/content/platform-detector.js",
+        "src/engines/rugpull.js",
+        "src/engines/bundler.js",
+        "src/engines/momentum.js",
+        "src/engines/winscore.js"
+      ],
       "matches": ["<all_urls>"]
     }
   ]

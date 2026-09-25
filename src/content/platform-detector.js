@@ -3,20 +3,33 @@
  * Automatically resolves active token mint/contract address from Axiom & Padre pages.
  */
 
-const BASE58_REGEX = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
-const HEX_REGEX = /0x[a-fA-F0-9]{40}/;
+const BASE58_EXACT_REGEX = /\b[1-9A-HJ-NP-Za-km-z]{32,44}\b/;
+const HEX_EXACT_REGEX = /\b0x[a-fA-F0-9]{40}\b/;
 
-export function extractTokenAddress(url, bodyText = '') {
+export function extractTokenAddress(rawUrl, bodyText = '') {
+  // Strip query parameters and hash prior to URL matching
+  const urlPath = rawUrl.split('?')[0].split('#')[0];
+
   // 1. Try URL path extraction
-  const urlMatches = url.match(BASE58_REGEX) || url.match(HEX_REGEX);
-  if (urlMatches) {
-    return { address: urlMatches[0], source: 'URL' };
+  const urlBase58Match = urlPath.match(BASE58_EXACT_REGEX);
+  if (urlBase58Match) {
+    return { address: urlBase58Match[0], source: 'URL' };
+  }
+
+  const urlHexMatch = urlPath.match(HEX_EXACT_REGEX);
+  if (urlHexMatch) {
+    return { address: urlHexMatch[0], source: 'URL' };
   }
 
   // 2. Try DOM body or active pair elements extraction
-  const textMatches = bodyText.match(BASE58_REGEX) || bodyText.match(HEX_REGEX);
-  if (textMatches) {
-    return { address: textMatches[0], source: 'DOM' };
+  const textBase58Match = bodyText.match(BASE58_EXACT_REGEX);
+  if (textBase58Match) {
+    return { address: textBase58Match[0], source: 'DOM' };
+  }
+
+  const textHexMatch = bodyText.match(HEX_EXACT_REGEX);
+  if (textHexMatch) {
+    return { address: textHexMatch[0], source: 'DOM' };
   }
 
   return null;
