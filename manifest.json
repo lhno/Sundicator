@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Memecoin Intelligence Overlay",
+  "version": "1.0.0",
+  "description": "Real-time DEX intelligence HUD overlay for Axiom and Padre trading terminals.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://axiom.trade/*",
+    "https://*.axiom.trade/*",
+    "https://trade.padre.gg/*",
+    "https://*.padre.gg/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://axiom.trade/*",
+        "https://*.axiom.trade/*",
+        "https://trade.padre.gg/*",
+        "https://*.padre.gg/*"
+      ],
+      "js": [
+        "src/content/content-script.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/ui/styles.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

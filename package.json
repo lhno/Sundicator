@@ -1,0 +1,13 @@
+{
+  "name": "memecoin-intelligence-overlay",
+  "version": "1.0.0",
+  "description": "High-Performance Real-Time Memecoin Intelligence Overlay Chrome Extension for Axiom and Padre",
+  "main": "src/background/service-worker.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
